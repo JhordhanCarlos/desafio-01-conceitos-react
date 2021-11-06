@@ -16,14 +16,30 @@ export function TaskList() {
 
   function handleCreateNewTask() {
     // Crie uma nova task com um id random, não permita criar caso o título seja vazio.
+    if(!newTaskTitle) return;
+
+    const novaTask:Task = {
+      id : Math.random(), 
+      title : newTaskTitle, 
+      isComplete : false
+    }
+    setTasks(oldState => [...oldState, novaTask]);
+    setNewTaskTitle('');//reseta o input após incrementar o state
   }
 
   function handleToggleTaskCompletion(id: number) {
     // Altere entre `true` ou `false` o campo `isComplete` de uma task com dado ID
+    
+    const completedTasks = tasks.map(task => task.id === id ?  { 
+      ...task, isComplete : !task.isComplete
+    } : task) //aplicando o conceito de imutabilidade nós criamos um novo array atualizado com os dados que queremos 
+    setTasks(completedTasks);// aqui atualizamos com o state com o novo array
   }
 
   function handleRemoveTask(id: number) {
     // Remova uma task da listagem pelo ID
+    const filteredTasks = tasks.filter(task => task.id !== id) //aplicando o conceito de imutabilidade nós criamos um novo array atualizado com os dados que queremos 
+    setTasks(filteredTasks);
   }
 
   return (
